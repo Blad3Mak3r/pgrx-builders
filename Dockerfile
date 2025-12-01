@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM debian:trixie
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -7,13 +7,19 @@ ARG PG_VERSION
 
 # Instalar dependencias básicas y agregar repositorio oficial de PostgreSQL
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    ca-certificates \
-    git \
-    pkg-config \
+    libclang-dev \
+    uild-essential \
+    libreadline-dev \
+    zlib1g-dev \
+    flex \
+    bison \
+    libxml2-dev \
+    libxslt-dev \
     libssl-dev \
-    lsb-release \
+    libxml2-utils \
+    xsltproc \
+    ccache \
+    pkg-config \
     gnupg \
     && rm -rf /var/lib/apt/lists/*
 

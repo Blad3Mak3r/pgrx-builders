@@ -21,14 +21,14 @@ RUN apt-get update && apt-get install -y \
     ccache \
     pkg-config \
     gnupg \
-    && rm -rf /var/lib/apt/lists/*
+    postgresql-common
 
-# Agregar repositorio oficial de PostgreSQL
-RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/postgresql-keyring.gpg \
-    && echo "deb [signed-by=/usr/share/keyrings/postgresql-keyring.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+# Setup POstgreSQL Repository
+RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
 
-# Instalar postgresql-server-dev según versión
+# Install PostgreSQL packages
 RUN apt-get update && apt-get install -y \
+    postgresql-${PG_VERSION} \
     postgresql-server-dev-${PG_VERSION} \
     && rm -rf /var/lib/apt/lists/*
 
@@ -40,7 +40,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 RUN cargo install cargo-pgrx --locked
 
 # Inicializar pgrx con la versión seleccionada
-RUN cargo pgrx init --pg${PG_VERSION}=/usr/lib/postgresql/${PG_VERSION}/bin/pg_config
+RUN cargo pgrx init --pg${PG_VERSION}=$(which pg_config)
 
 WORKDIR /workspace
 

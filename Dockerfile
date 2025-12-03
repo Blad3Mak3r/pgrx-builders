@@ -7,8 +7,9 @@ ARG PG_VERSION
 
 # Instalar dependencias básicas y agregar repositorio oficial de PostgreSQL
 RUN apt-get update && apt-get install -y \
+		curl \
     libclang-dev \
-    uild-essential \
+    build-essential \
     libreadline-dev \
     zlib1g-dev \
     flex \
